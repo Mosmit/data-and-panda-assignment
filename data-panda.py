@@ -8,13 +8,21 @@ from sklearn.datasets import load_iris
 # Task 1: Load and Explore the Dataset
 # -------------------------
 try:
-    # Load the Iris dataset from sklearn
+    # Load the Iris dataset
     iris = load_iris()
     df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
-    # Replace the default species names with cat family species
+
+    # Rename columns to fit cat anatomy
+    df.rename(columns={
+        'sepal length (cm)': 'fang length (cm)',
+        'sepal width (cm)': 'fang width (cm)',
+        'petal length (cm)': 'claw length (cm)',
+        'petal width (cm)': 'claw width (cm)'
+    }, inplace=True)
+
+    # Rename species to big cat family
     cat_family = ['lion', 'tiger', 'cheetah']
     df['species'] = pd.Categorical.from_codes(iris.target, cat_family)
-
 
     print("First 5 rows of the dataset:")
     print(df.head())
@@ -25,7 +33,7 @@ try:
     print("\nMissing values:")
     print(df.isnull().sum())
 
-    # Clean: Drop or fill missing values (none expected in Iris, but just in case)
+    # Clean missing values (if any)
     df.dropna(inplace=True)
 
 except FileNotFoundError:
@@ -39,7 +47,7 @@ except Exception as e:
 print("\nDescriptive statistics:")
 print(df.describe())
 
-print("\nAverage values grouped by species:")
+print("\nAverage values grouped by cat species:")
 print(df.groupby("species").mean())
 
 # -------------------------
@@ -47,39 +55,39 @@ print(df.groupby("species").mean())
 # -------------------------
 sns.set(style="whitegrid")
 
-# 1. Line Chart – Simulate time series using index
+# 1. Line Chart – Fang length over index
 plt.figure(figsize=(10, 5))
-plt.plot(df.index, df["sepal length (cm)"], label="Sepal Length")
-plt.title("Line Chart of Sepal Length over Index (Simulated Time)")
-plt.xlabel("Index")
-plt.ylabel("Sepal Length (cm)")
+plt.plot(df.index, df["fang length (cm)"], label="Fang Length", color="orange")
+plt.title("Fang Length Trend Among Cat Species")
+plt.xlabel("Observation Index")
+plt.ylabel("Fang Length (cm)")
 plt.legend()
 plt.tight_layout()
 plt.show()
 
-# 2. Bar Chart – Average petal length by species
+# 2. Bar Chart – Average claw length by cat species
 plt.figure(figsize=(8, 5))
-sns.barplot(data=df, x="species", y="petal length (cm)", ci=None)
-plt.title("Average Petal Length by Species")
-plt.xlabel("Species")
-plt.ylabel("Petal Length (cm)")
+sns.barplot(data=df, x="species", y="claw length (cm)", palette="Set2", ci=None)
+plt.title("Average Claw Length by Cat Species")
+plt.xlabel("Cat Species")
+plt.ylabel("Claw Length (cm)")
 plt.tight_layout()
 plt.show()
 
-# 3. Histogram – Distribution of sepal width
+# 3. Histogram – Distribution of fang width
 plt.figure(figsize=(8, 5))
-sns.histplot(data=df, x="sepal width (cm)", kde=True, bins=20)
-plt.title("Distribution of Sepal Width")
-plt.xlabel("Sepal Width (cm)")
+sns.histplot(data=df, x="fang width (cm)", kde=True, bins=20, color="purple")
+plt.title("Distribution of Fang Width Among Big Cats")
+plt.xlabel("Fang Width (cm)")
 plt.tight_layout()
 plt.show()
 
-# 4. Scatter Plot – Sepal length vs Petal length
+# 4. Scatter Plot – Fang length vs Claw length
 plt.figure(figsize=(8, 5))
-sns.scatterplot(data=df, x="sepal length (cm)", y="petal length (cm)", hue="species")
-plt.title("Sepal Length vs Petal Length")
-plt.xlabel("Sepal Length (cm)")
-plt.ylabel("Petal Length (cm)")
-plt.legend(title="Species")
+sns.scatterplot(data=df, x="fang length (cm)", y="claw length (cm)", hue="species", palette="deep")
+plt.title("Fang Length vs Claw Length by Cat Species")
+plt.xlabel("Fang Length (cm)")
+plt.ylabel("Claw Length (cm)")
+plt.legend(title="Cat Species")
 plt.tight_layout()
 plt.show()
